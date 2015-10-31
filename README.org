@@ -1,0 +1,146 @@
+#+TITLE: Discovering a java class
+#+AUTHOR: Daniele Santoro
+#+DATE: 31/10/2015
+
+* Introduction
+  Code and documentation are present at this link: [[https://github.com/acca/assignment5]]. 
+
+  This application demonstrated how it is possible to inspect and discover a Java compiled .class using Java Reflection without knowing nothing about it.
+
+  Java [[https://goo.gl/GnfSzb][Reflection]] is a cool technique, common with other languages, used to examine and change the behavior of a computer program at run-time. It is widely used is *plugin* architectures and also in the *Javadoc* engine.
+
+  In this case we have a .jar file containing two .class files (Java bytecode) which have to be inspected using Java reflection mechanisms in order to understand what these classes do.
+
+* Implementation
+  I've deployed a simple Java application which takes the =Black.jar= file (given from default path or from used specified path) and extract it. Then it looks inside the archive for any =.class= file present and tries to inspect it.
+
+  The following methods have been implemented:
+  - *getClassList* : Extract the =.class= files from the Jar archive.
+  - *discovery* : Basic discovery of both the classes.
+  - *deepDiscovery* : Discovery of methods and parameters type for the outer class.
+  - *playWithMistery* : Play with the windows modifying the dimensions calling the Mistery methods using Java reflections.
+  - *instantiateClass* : Try to instantiate the class without success, see /Comments and notes/ section above.
+  
+  As can be seen running the application, the two classes in the =Black.jar= file simply create a yellow window containing a black circle. In particular the =Mistery.class= outer class creates a _JFrame_ (the window) with title /Cerchio/, then it instantiate an inner class which is compiled in the second file: =Mistery$1.class=. This second class is a _JPanel_ which draw the content of the JFrame setting its background color and drawing the black circle.
+
+  Methods of the =Mistery.class= sets the dimensions of the JFrame (=setW, setH=) and dimensions of the circle (=setCH, setWH=) and paints the modified JFrame.
+
+* Deployment
+  The repository is a Netbeans project: /assignment5/.  
+  
+** Deploy & Run
+   It is possible to run the application from inside Netbeans (as usual) or from command line:
+   1) Download the repository using git:
+      #+BEGIN_EXAMPLE
+      git clone [[https://github.com/acca/assignment5.git]]
+      #+END_EXAMPLE
+   2) Move into the project main folder
+      #+BEGIN_EXAMPLE
+      cd assignment5
+      #+END_EXAMPLE
+   3) Compile the application
+      #+BEGIN_EXAMPLE
+      javac -d . src/assignment5/*
+      #+END_EXAMPLE
+   4) Run the application
+      #+BEGIN_EXAMPLE
+      // Using default file Black.jar in the root folder of the repository
+      java  assignment5/Assignment5
+      // Or specifying its absolute path
+      java  assignment5/Assignment5 PATH/Black.jar
+      #+END_EXAMPLE
+
+** Screen-shots
+   - Here is the output of the application:
+     #+BEGIN_EXAMPLE
+$ java  assignment5/Assignment5 ~/Downloads/Black.jar 
+Class found in Jar archive: p.Mistery
+Class found in Jar archive: p.Mistery$1
+
+Discovering class: 0
+This Class name is: p.Mistery
+This Class simple name is: Mistery
+This Class inherit from: java.lang.Object
+This Class public methods are:
+Method 0 name is: create
+Method 0 return type is: class p.Mistery
+Method 0 has no parameters
+Method 1 name is: setCW
+Method 1 return type is: void
+Method 1 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: int
+Method 2 name is: setCH
+Method 2 return type is: void
+Method 2 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: int
+Method 3 name is: setC
+Method 3 return type is: void
+Method 3 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: int
+Method 4 name is: setW
+Method 4 return type is: void
+Method 4 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: int
+Method 5 name is: setH
+Method 5 return type is: void
+Method 5 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: int
+Method 6 name is: wait
+Method 6 return type is: void
+Method 6 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: long
+     Parameter 1 name is: arg1
+     Parameter 1 type is: int
+Method 7 name is: wait
+Method 7 return type is: void
+Method 7 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: long
+Method 8 name is: wait
+Method 8 return type is: void
+Method 8 has no parameters
+Method 9 name is: equals
+Method 9 return type is: boolean
+Method 9 parameters are:
+     Parameter 0 name is: arg0
+     Parameter 0 type is: class java.lang.Object
+Method 10 name is: toString
+Method 10 return type is: class java.lang.String
+Method 10 has no parameters
+Method 11 name is: hashCode
+Method 11 return type is: int
+Method 11 has no parameters
+Method 12 name is: getClass
+Method 12 return type is: class java.lang.Class
+Method 12 has no parameters
+Method 13 name is: notify
+Method 13 return type is: void
+Method 13 has no parameters
+Method 14 name is: notifyAll
+Method 14 return type is: void
+Method 14 has no parameters
+Return type of 'create' method is the object represented by thi class. Trying to call it instantiate an object of the Mistery class.
+
+Discovering class: 1
+This Class name is: p.Mistery$1
+This Class simple name is: 
+This Class inherit from: javax.swing.JPanel     
+     #+END_EXAMPLE
+
+   - Here is an image: Screenshot image link
+     [[./img/screen.png]]
+   
+* Comments and notes
+  - At first I've tried to instantiate an object of type Mistery but its constructor was private. Then I've tried to modify its scope to be able to instantiate the class but again error was coming (un-comment the call of method =instantiateClass=). The constructor of Mistery class call some private member of this class, indeed this is the error I had:
+    #+BEGIN_EXAMPLE
+    java.lang.IllegalAccessException: Class assignment5.Discover can not access a member of class p.Mistery with modifiers "private"
+    #+END_EXAMPLE
+  - Despite I've tried to play with it, I don't understood what does method =setC= of Mistery.class.
+
+  
