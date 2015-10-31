@@ -26,8 +26,7 @@
   Methods of the =Mistery.class= sets the dimensions of the JFrame (=setW, setH=) and dimensions of the circle (=setCH, setWH=) and paints the modified JFrame.
 
 * Deployment
-  The repository is a Netbeans project: /assignment5/.  
-  
+  The repository is a Netbeans project: /assignment5/.    
 ** Deploy & Run
    It is possible to run the application from inside Netbeans (as usual) or from command line:
    1) Download the repository using git:
@@ -43,13 +42,14 @@
       javac -d . src/assignment5/*
       #+END_EXAMPLE
    4) Run the application
-      #+BEGIN_EXAMPLE
-      // Using default file Black.jar in the root folder of the repository
-      java  assignment5/Assignment5
-      // Or specifying its absolute path
-      java  assignment5/Assignment5 PATH/Black.jar
-      #+END_EXAMPLE
-
+      - Using default file Black.jar in the root folder of the repository
+        #+BEGIN_EXAMPLE
+	java  assignment5/Assignment5
+        #+END_EXAMPLE
+      - Or specifying its absolute path
+	#+BEGIN_EXAMPLE
+	java  assignment5/Assignment5 PATH/Black.jar
+	#+END_EXAMPLE
 ** Screen-shots
    - Here is the output of the application:
      #+BEGIN_EXAMPLE
@@ -133,7 +133,7 @@ This Class simple name is:
 This Class inherit from: javax.swing.JPanel     
      #+END_EXAMPLE
 
-   - Here is an image: Screenshot image link
+   - Here is an image
      [[./img/screen.png]]
    
 * Comments and notes
