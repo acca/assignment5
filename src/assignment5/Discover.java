@@ -110,9 +110,8 @@ public class Discover {
             }
             System.out.println("Return type of 'create' method is the object represented by thi class. Trying to call it instantiate an object of the Mistery class.");
             Method m = c.getMethod("create");
-            Object o = new Object();
-            try {
-                this.misteryO = m.invoke(o);
+            try {              
+                this.misteryO = m.invoke(new Object());                                
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -141,14 +140,14 @@ public class Discover {
 
     private void playWithMistery(Class c) {
             try {
-                Method m = c.getMethod("setCH", int.class);
-                Method m1 = c.getMethod("setW", int.class);
-                Method m2 = c.getMethod("setC", int.class);
+                Method setCH = c.getMethod("setCH", int.class);
+                Method setW = c.getMethod("setW", int.class);
+                Method setC = c.getMethod("setC", int.class);
                 try {
                     for (int i=0;i<100;i++) {
-                        m.invoke(this.misteryO,50+i);
-                        m1.invoke(this.misteryO,250+(i*5));
-                        m2.invoke(this.misteryO,-60);
+                        setCH.invoke(this.misteryO,50+i);
+                        setW.invoke(this.misteryO,250+(i*5));
+                        //m2.invoke(this.misteryO,60+(10*5));
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException ex) {
