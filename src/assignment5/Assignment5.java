@@ -15,8 +15,12 @@ public class Assignment5 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Discover  d = new Discover();
-        d.discoveryLoop();
+        String jarPath = "Black.jar";
+        if (args.length == 1) {
+            jarPath = args[0];
+        }
+        Discover  d = new Discover();        
+        d.discoveryLoop(jarPath);
     }
     
 }
