@@ -29,8 +29,8 @@ import java.util.logging.Logger;
  */
 public class Discover {
 
-    public void discoveryLoop() {
-        ArrayList<Class> classes = getClassList("Black.jar");
+    public void discoveryLoop(String jarPath) {
+        ArrayList<Class> classes = getClassList(jarPath);
         ListIterator<Class> i = classes.listIterator();
         while (i.hasNext()) {
             System.out.println("\nDiscovering class: " + i.nextIndex());
@@ -40,7 +40,7 @@ public class Discover {
     }
 
     public ArrayList<Class> getClassList(String pathToJar) {
-        ArrayList<Class> classList = new ArrayList();
+        ArrayList<Class> classList = new ArrayList<>();
         JarFile jarFile;
         try {
             jarFile = new JarFile(pathToJar);
@@ -81,6 +81,7 @@ public class Discover {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void deepDiscovery(Class c) {
         try {
             //instantiateClass(c);
@@ -105,36 +106,27 @@ public class Discover {
             System.out.println("Return type of 'create' method is the object represented by thi class. Trying to call it instantiate an object of the Mistery class.");
             Method m = c.getMethod("create");
             try {
-                m.invoke(new Object(), null);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvocationTargetException ex) {
+                m.invoke(new Object());
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    @SuppressWarnings("unchecked")
     private void instantiateClass(Class c) {
         try {
             Constructor constructor = null;
             try {
                 constructor = c.getDeclaredConstructor(new Class[0]);
-            } catch (NoSuchMethodException ex) {
-                Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
+            } catch (NoSuchMethodException | SecurityException ex) {
                 Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
             }
             constructor.setAccessible(true);
             Object o = c.newInstance();
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Discover.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
